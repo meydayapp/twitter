@@ -1,4 +1,10 @@
-import { StyleSheet, Image, SafeAreaView, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  FlatList,
+  Pressable,
+} from "react-native";
 
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
@@ -12,6 +18,7 @@ export default function TabOneScreen() {
         data={tweets}
         renderItem={({ item }) => <Tweet tweet={item} />}
       />
+      <Pressable style={styles.floatingButton}></Pressable>
     </View>
   );
 }
@@ -21,4 +28,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+  floatingButton: {},
 });
