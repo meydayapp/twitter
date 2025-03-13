@@ -4,15 +4,16 @@ import {
   StyleSheet,
   Image,
   SafeAreaView,
+  Pressable,
   Button,
 } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
 import { TweetType } from "../types";
 import { Entypo } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import IconButton from "./IconButton";
+import { Link } from "expo-router";
 
 dayjs.extend(relativeTime);
 
@@ -29,36 +30,40 @@ const Tweet = ({ tweet }: TweetProps) => {
     diffHours <= 24 ? createdAt.fromNow() : createdAt.format("MMM D, YYYY");
 
   return (
-    <View style={styles.container}>
-      <Image src={tweet.user.image} style={styles.userImage} />
-      <View style={styles.mainContainer}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.name}>{tweet.user.name}</Text>
-          <Text style={styles.username}>@{tweet.user.username}</Text>
-          <Text style={{ marginLeft: "auto", color: "grey" }}>
-            · {displayTime}{" "}
-          </Text>
-          <Entypo
-            name="dots-three-horizontal"
-            size={16}
-            color="grey"
-            style={{ marginLeft: "auto" }}
-          />
+    <Link href={`/tweet/${tweet.id}`} asChild>
+      <Pressable style={styles.container}>
+        <Image src={tweet.user.image} style={styles.userImage} />
+        <View style={styles.mainContainer}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={styles.name}>{tweet.user.name}</Text>
+            <Text style={styles.username}>@{tweet.user.username}</Text>
+            <Text style={{ marginLeft: "auto", color: "grey" }}>
+              · {displayTime}{" "}
+            </Text>
+            <Entypo
+              name="dots-three-horizontal"
+              size={16}
+              color="grey"
+              style={{ marginLeft: "auto" }}
+            />
+          </View>
+
+          <Text style={styles.content}>{tweet.content}</Text>
+
+          {tweet.image && <Image src={tweet.image} style={styles.image} />}
+
+          <View style={styles.footer}>
+            <IconButton icon="heart" text={tweet.numberOfLikes} />
+            <IconButton icon="comment" text={tweet.numberOfComments} />
+            <IconButton icon="retweet" text={tweet.numberOfRetweets} />
+            <IconButton icon="chart" text={tweet.impressions || 0} />
+            <IconButton icon="share-apple" />
+          </View>
         </View>
-
-        <Text style={styles.content}>{tweet.content}</Text>
-
-        {tweet.image && <Image src={tweet.image} style={styles.image} />}
-
-        <View style={styles.footer}>
-          <IconButton icon="heart" text={tweet.numberOfLikes} />
-          <IconButton icon="comment" text={tweet.numberOfComments} />
-          <IconButton icon="retweet" text={tweet.numberOfRetweets} />
-          <IconButton icon="chart" text={tweet.impressions || 0} />
-          <IconButton icon="share-apple" />
-        </View>
-      </View>
-    </View>
+      </Pressable>
+    </Link>
   );
 };
 
